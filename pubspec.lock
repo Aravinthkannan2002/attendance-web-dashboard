@@ -541,6 +541,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.1"
+  status_snackbar:
+    dependency: "direct main"
+    description:
+      name: status_snackbar
+      sha256: cc2216244af38e90db297623ccd8a28abdc7c95f7f16382ff31babc99873c8b0
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
   storage_client:
     dependency: transitive
     description:
