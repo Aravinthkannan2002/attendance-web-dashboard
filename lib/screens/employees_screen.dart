@@ -4,6 +4,7 @@ import '../controllers/employees_controller.dart';
 import '../core/app_theme.dart';
 import '../models/employee_model.dart';
 import '../services/dashboard_service.dart';
+import '../widgets/app_popup.dart';
 import '../widgets/shimmer_loading.dart';
 
 class EmployeesScreen extends StatelessWidget {
@@ -60,7 +61,7 @@ class EmployeesScreen extends StatelessWidget {
   }
 }
 
-// ── Header ─────────────────────────────────────────────────────────────────
+// -- Header -------------------------------------------------------------------
 
 class _EmployeesHeader extends StatelessWidget {
   final EmployeesController controller;
@@ -93,18 +94,18 @@ class _EmployeesHeader extends StatelessWidget {
             onChanged: controller.onSearch,
             decoration: InputDecoration(
               hintText: 'Search by name, ID or dept...',
-              prefixIcon: Icon(Icons.search, size: 18, color: AppTheme.textSecondaryOf(context)),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              prefixIcon: Icon(Icons.search, size: 20, color: AppTheme.textSecondaryOf(context)),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: AppTheme.borderColorOf(context)),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: AppTheme.borderColorOf(context)),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
                 borderSide: const BorderSide(color: AppTheme.primaryColor, width: 1.5),
               ),
               filled: true,
@@ -144,23 +145,23 @@ class _EmployeesHeader extends StatelessWidget {
         const Spacer(),
 
         SizedBox(
-          width: 280,
+          width: 320,
           child: TextField(
             onChanged: controller.onSearch,
             decoration: InputDecoration(
               hintText: 'Search by name, ID or dept...',
-              prefixIcon: Icon(Icons.search, size: 18, color: AppTheme.textSecondaryOf(context)),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              prefixIcon: Icon(Icons.search, size: 20, color: AppTheme.textSecondaryOf(context)),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: AppTheme.borderColorOf(context)),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: AppTheme.borderColorOf(context)),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
                 borderSide: const BorderSide(color: AppTheme.primaryColor, width: 1.5),
               ),
               filled: true,
@@ -172,13 +173,13 @@ class _EmployeesHeader extends StatelessWidget {
         const SizedBox(width: 12),
         ElevatedButton.icon(
           onPressed: () => _showAddDialog(context),
-          icon: const Icon(Icons.person_add_rounded, size: 16),
-          label: const Text('Add Employee'),
+          icon: const Icon(Icons.person_add_rounded, size: 18),
+          label: const Text('Add Employee', style: TextStyle(fontWeight: FontWeight.w600)),
           style: ElevatedButton.styleFrom(
             backgroundColor: AppTheme.primaryColor,
             foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             elevation: 0,
           ),
         ),
@@ -259,7 +260,7 @@ class _RefreshButton extends StatelessWidget {
   }
 }
 
-// ── Table card ─────────────────────────────────────────────────────────────
+// -- Table card ---------------------------------------------------------------
 
 class _EmployeesTableCard extends StatelessWidget {
   final EmployeesController controller;
@@ -338,16 +339,16 @@ class _TableHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final headerBg = isDark
-        ? Colors.white.withValues(alpha: 0.04)
-        : AppTheme.primaryColor.withValues(alpha: 0.03);
+        ? Colors.white.withValues(alpha: 0.06)
+        : AppTheme.primaryColor.withValues(alpha: 0.05);
     final headerStyle = TextStyle(
-      fontSize: 11,
+      fontSize: 12,
       fontWeight: FontWeight.w700,
       color: AppTheme.textSecondaryOf(context),
       letterSpacing: 0.8,
     );
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
         color: headerBg,
         border: Border(
@@ -403,17 +404,18 @@ class _EmployeeRowState extends State<_EmployeeRow> {
 
     final stripeBg = widget.isEven
         ? Colors.transparent
-        : (isDark ? Colors.white.withValues(alpha: 0.02) : Colors.black.withValues(alpha: 0.015));
+        : (isDark ? Colors.white.withValues(alpha: 0.03) : Colors.black.withValues(alpha: 0.02));
     final hoverBg = isDark
-        ? Colors.white.withValues(alpha: 0.05)
-        : AppTheme.primaryColor.withValues(alpha: 0.04);
+        ? Colors.white.withValues(alpha: 0.06)
+        : AppTheme.primaryColor.withValues(alpha: 0.05);
 
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        curve: Curves.easeOut,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: BoxDecoration(
           color: _hovered ? hoverBg : stripeBg,
           border: Border(
@@ -440,24 +442,31 @@ class _EmployeeRowState extends State<_EmployeeRow> {
               child: Row(
                 children: [
                   Container(
-                    width: 36,
-                    height: 36,
+                    width: 40,
+                    height: 40,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppTheme.primaryColor.withValues(alpha: 0.15),
+                          AppTheme.primaryColor.withValues(alpha: 0.20),
                           AppTheme.primaryColor.withValues(alpha: 0.08),
                         ],
                       ),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.primaryColor.withValues(alpha: 0.12),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Center(
                       child: Text(
                         initials.toUpperCase(),
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 13,
                           fontWeight: FontWeight.w700,
                           color: AppTheme.primaryColor,
                         ),
@@ -481,20 +490,14 @@ class _EmployeeRowState extends State<_EmployeeRow> {
             ),
             SizedBox(
               width: 120,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: AppTheme.surfaceColorOf(context),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  employee.employeeId.isNotEmpty ? employee.employeeId : '-',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppTheme.textSecondaryOf(context),
-                    fontFamily: 'monospace',
-                    fontWeight: FontWeight.w500,
-                  ),
+              child: Text(
+                employee.employeeId.isNotEmpty ? employee.employeeId : '-',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: AppTheme.textSecondaryOf(context).withValues(alpha: 0.8),
+                  fontFamily: 'monospace',
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 0.3,
                 ),
               ),
             ),
@@ -538,7 +541,7 @@ class _EmployeeRowState extends State<_EmployeeRow> {
                     tooltip: 'Edit',
                     onPressed: () => _showEditDialog(context),
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: 6),
                   _ActionIcon(
                     icon: employee.isActive
                         ? Icons.person_off_outlined
@@ -571,35 +574,21 @@ class _EmployeeRowState extends State<_EmployeeRow> {
   void _showToggleDialog(BuildContext context) {
     final employee = widget.employee;
     final action = employee.isActive ? 'deactivate' : 'activate';
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text('${action[0].toUpperCase()}${action.substring(1)} Employee'),
-        content: Text('Are you sure you want to $action ${employee.name}?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              widget.controller.toggleActive(employee);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: employee.isActive ? AppTheme.errorColor : AppTheme.successColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-            child: Text(action[0].toUpperCase() + action.substring(1)),
-          ),
-        ],
-      ),
+    AppPopup.show(
+      title: '${action[0].toUpperCase()}${action.substring(1)} Employee',
+      message: 'Are you sure you want to $action ${employee.name}?',
+      confirmText: action[0].toUpperCase() + action.substring(1),
+      cancelText: 'Cancel',
+      isDestructive: employee.isActive,
+      onConfirm: () {
+        Get.back();
+        widget.controller.toggleActive(employee);
+      },
     );
   }
 }
 
-class _ActionIcon extends StatelessWidget {
+class _ActionIcon extends StatefulWidget {
   final IconData icon;
   final Color color;
   final String tooltip;
@@ -613,19 +602,36 @@ class _ActionIcon extends StatelessWidget {
   });
 
   @override
+  State<_ActionIcon> createState() => _ActionIconState();
+}
+
+class _ActionIconState extends State<_ActionIcon> {
+  bool _hovered = false;
+
+  @override
   Widget build(BuildContext context) {
     return Tooltip(
-      message: tooltip,
-      child: Material(
-        color: color.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(8),
-        child: InkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(8),
-          child: SizedBox(
-            width: 32,
-            height: 32,
-            child: Icon(icon, size: 16, color: color),
+      message: widget.tooltip,
+      child: MouseRegion(
+        onEnter: (_) => setState(() => _hovered = true),
+        onExit: (_) => setState(() => _hovered = false),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          curve: Curves.easeOut,
+          child: Material(
+            color: _hovered
+                ? widget.color.withValues(alpha: 0.15)
+                : widget.color.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(8),
+            child: InkWell(
+              onTap: widget.onPressed,
+              borderRadius: BorderRadius.circular(8),
+              child: SizedBox(
+                width: 36,
+                height: 36,
+                child: Icon(widget.icon, size: 16, color: widget.color),
+              ),
+            ),
           ),
         ),
       ),
@@ -642,18 +648,18 @@ class _FaceRegisteredChip extends StatelessWidget {
     final color = registered ? AppTheme.successColor : AppTheme.errorColor;
     return Container(
       constraints: const BoxConstraints(maxWidth: 110),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: color.withValues(alpha: 0.18)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             registered ? Icons.check_circle : Icons.cancel,
-            size: 12,
+            size: 13,
             color: color,
           ),
           const SizedBox(width: 4),
@@ -679,12 +685,12 @@ class _StatusChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isActive ? AppTheme.successColor : AppTheme.textSecondary;
     return Container(
-      constraints: const BoxConstraints(maxWidth: 70),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      constraints: const BoxConstraints(maxWidth: 74),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: color.withValues(alpha: 0.18)),
       ),
       child: Text(
         isActive ? 'Active' : 'Inactive',
@@ -699,7 +705,7 @@ class _StatusChip extends StatelessWidget {
   }
 }
 
-// ── Pagination bar ─────────────────────────────────────────────────────────
+// -- Pagination bar -----------------------------------------------------------
 
 class _PaginationBar extends StatelessWidget {
   final int currentPage;
@@ -726,12 +732,11 @@ class _PaginationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final from = (currentPage * pageSize + 1).clamp(1, totalItems);
     final to = ((currentPage + 1) * pageSize).clamp(1, totalItems);
-    final isNarrow = MediaQuery.of(context).size.width < 600;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Wrap(
-        spacing: 12,
+        spacing: 16,
         runSpacing: 8,
         alignment: WrapAlignment.spaceBetween,
         children: [
@@ -745,18 +750,24 @@ class _PaginationBar extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (!isNarrow) ...[
-                Text(
-                  'Page ${currentPage + 1} of $totalPages',
+              _PageButton(icon: Icons.chevron_left, enabled: hasPrev, onTap: onPrev),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  '${currentPage + 1} / $totalPages',
                   style: TextStyle(
                     fontSize: 13,
-                    color: AppTheme.textSecondaryOf(context),
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.primaryColor,
                   ),
                 ),
-                const SizedBox(width: 12),
-              ],
-              _PageButton(icon: Icons.chevron_left, enabled: hasPrev, onTap: onPrev),
-              const SizedBox(width: 6),
+              ),
+              const SizedBox(width: 8),
               _PageButton(icon: Icons.chevron_right, enabled: hasNext, onTap: onNext),
             ],
           ),
@@ -766,7 +777,7 @@ class _PaginationBar extends StatelessWidget {
   }
 }
 
-class _PageButton extends StatelessWidget {
+class _PageButton extends StatefulWidget {
   final IconData icon;
   final bool enabled;
   final VoidCallback onTap;
@@ -778,24 +789,43 @@ class _PageButton extends StatelessWidget {
   });
 
   @override
+  State<_PageButton> createState() => _PageButtonState();
+}
+
+class _PageButtonState extends State<_PageButton> {
+  bool _hovered = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Material(
-      color: enabled ? AppTheme.cardColorOf(context) : AppTheme.surfaceColorOf(context),
-      borderRadius: BorderRadius.circular(8),
-      child: InkWell(
-        onTap: enabled ? onTap : null,
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          width: 34,
-          height: 34,
-          decoration: BoxDecoration(
-            border: Border.all(color: AppTheme.borderColorOf(context)),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(
-            icon,
-            size: 18,
-            color: enabled ? AppTheme.textPrimaryOf(context) : AppTheme.textSecondaryOf(context),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: Material(
+        color: widget.enabled
+            ? (_hovered
+                ? AppTheme.primaryColor.withValues(alpha: 0.08)
+                : AppTheme.cardColorOf(context))
+            : AppTheme.surfaceColorOf(context),
+        borderRadius: BorderRadius.circular(10),
+        child: InkWell(
+          onTap: widget.enabled ? widget.onTap : null,
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: widget.enabled && _hovered
+                    ? AppTheme.primaryColor.withValues(alpha: 0.3)
+                    : AppTheme.borderColorOf(context),
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              widget.icon,
+              size: 20,
+              color: widget.enabled ? AppTheme.textPrimaryOf(context) : AppTheme.textSecondaryOf(context),
+            ),
           ),
         ),
       ),
@@ -803,7 +833,7 @@ class _PageButton extends StatelessWidget {
   }
 }
 
-// ── Empty state ────────────────────────────────────────────────────────────
+// -- Empty state --------------------------------------------------------------
 
 class _EmptyState extends StatelessWidget {
   final bool hasSearch;
@@ -812,7 +842,7 @@ class _EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 96, horizontal: 32),
       decoration: BoxDecoration(
         color: AppTheme.cardColorOf(context),
         borderRadius: BorderRadius.circular(16),
@@ -822,36 +852,44 @@ class _EmptyState extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              width: 72,
-              height: 72,
+              width: 88,
+              height: 88,
               decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppTheme.primaryColor.withValues(alpha: 0.12),
+                    AppTheme.primaryColor.withValues(alpha: 0.04),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(24),
               ),
               child: Icon(
-                hasSearch ? Icons.search_off : Icons.people_outline,
-                size: 36,
-                color: AppTheme.primaryColor.withValues(alpha: 0.5),
+                hasSearch ? Icons.search_off_rounded : Icons.groups_outlined,
+                size: 42,
+                color: AppTheme.primaryColor.withValues(alpha: 0.6),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
             Text(
-              hasSearch ? 'No employees match your search' : 'No employees found',
+              hasSearch ? 'No employees match your search' : 'No employees yet',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w600,
                 color: AppTheme.textPrimaryOf(context),
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Text(
               hasSearch
-                  ? 'Try a different search term'
-                  : 'Employees added via the mobile app will appear here',
+                  ? 'Try adjusting your search term or filters'
+                  : 'Employees added via the mobile app will appear here.\nYou can also add them using the button above.',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: 14,
                 color: AppTheme.textSecondaryOf(context),
+                height: 1.5,
               ),
               textAlign: TextAlign.center,
             ),
@@ -862,7 +900,7 @@ class _EmptyState extends StatelessWidget {
   }
 }
 
-// ── Add Employee Dialog ──────────────────────────────────────────────────
+// -- Add Employee Dialog ------------------------------------------------------
 
 class _AddEmployeeDialog extends StatefulWidget {
   final EmployeesController controller;
@@ -910,11 +948,23 @@ class _AddEmployeeDialogState extends State<_AddEmployeeDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Row(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      titlePadding: const EdgeInsets.fromLTRB(28, 28, 28, 0),
+      contentPadding: const EdgeInsets.fromLTRB(28, 20, 28, 0),
+      actionsPadding: const EdgeInsets.fromLTRB(28, 12, 28, 24),
+      title: Row(
         children: [
-          Icon(Icons.person_add_rounded, color: AppTheme.primaryColor, size: 22),
-          SizedBox(width: 10),
-          Text('Add Employee'),
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppTheme.primaryColor.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.person_add_rounded, color: AppTheme.primaryColor, size: 20),
+          ),
+          const SizedBox(width: 12),
+          const Text('Add Employee'),
         ],
       ),
       content: SizedBox(
@@ -932,7 +982,7 @@ class _AddEmployeeDialogState extends State<_AddEmployeeDialog> {
                 ),
                 validator: (v) => v == null || v.trim().isEmpty ? 'Name is required' : null,
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 18),
               TextField(
                 controller: _empIdCtrl,
                 decoration: const InputDecoration(
@@ -941,7 +991,7 @@ class _AddEmployeeDialogState extends State<_AddEmployeeDialog> {
                   hintText: 'e.g. EMP001',
                 ),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 18),
               TextField(
                 controller: _deptCtrl,
                 decoration: const InputDecoration(
@@ -949,7 +999,7 @@ class _AddEmployeeDialogState extends State<_AddEmployeeDialog> {
                   prefixIcon: Icon(Icons.business_outlined, size: 20),
                 ),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 18),
               TextField(
                 controller: _desigCtrl,
                 decoration: const InputDecoration(
@@ -957,17 +1007,17 @@ class _AddEmployeeDialogState extends State<_AddEmployeeDialog> {
                   prefixIcon: Icon(Icons.work_outline, size: 20),
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 14),
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withValues(alpha: 0.06),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Row(
                   children: [
                     Icon(Icons.info_outline, size: 16, color: AppTheme.primaryColor),
-                    SizedBox(width: 8),
+                    SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         'After adding, register their face on the kiosk tablet.',
@@ -984,10 +1034,17 @@ class _AddEmployeeDialogState extends State<_AddEmployeeDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          ),
           child: const Text('Cancel'),
         ),
         ElevatedButton(
           onPressed: _saving ? null : _save,
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
           child: _saving
               ? const SizedBox(
                   width: 16,
@@ -1001,7 +1058,7 @@ class _AddEmployeeDialogState extends State<_AddEmployeeDialog> {
   }
 }
 
-// ── Edit Employee Dialog ─────────────────────────────────────────────────
+// -- Edit Employee Dialog -----------------------------------------------------
 
 class _EditEmployeeDialog extends StatefulWidget {
   final EmployeeModel employee;
@@ -1061,15 +1118,18 @@ class _EditEmployeeDialogState extends State<_EditEmployeeDialog> {
         : 420.0;
 
     return AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      titlePadding: const EdgeInsets.fromLTRB(28, 28, 28, 0),
+      contentPadding: const EdgeInsets.fromLTRB(28, 20, 28, 0),
+      actionsPadding: const EdgeInsets.fromLTRB(28, 12, 28, 24),
       title: Row(
         children: [
           Container(
-            width: 36,
-            height: 36,
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(Icons.edit, size: 18, color: AppTheme.primaryColor),
           ),
@@ -1089,7 +1149,7 @@ class _EditEmployeeDialogState extends State<_EditEmployeeDialog> {
                 prefixIcon: Icon(Icons.person_outline, size: 20),
               ),
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 18),
             TextField(
               controller: _empIdCtrl,
               decoration: const InputDecoration(
@@ -1097,7 +1157,7 @@ class _EditEmployeeDialogState extends State<_EditEmployeeDialog> {
                 prefixIcon: Icon(Icons.badge_outlined, size: 20),
               ),
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 18),
             TextField(
               controller: _deptCtrl,
               decoration: const InputDecoration(
@@ -1105,7 +1165,7 @@ class _EditEmployeeDialogState extends State<_EditEmployeeDialog> {
                 prefixIcon: Icon(Icons.business_outlined, size: 20),
               ),
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 18),
             TextField(
               controller: _desigCtrl,
               decoration: const InputDecoration(
@@ -1116,7 +1176,6 @@ class _EditEmployeeDialogState extends State<_EditEmployeeDialog> {
           ],
         ),
       ),
-      actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 20),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
@@ -1144,7 +1203,7 @@ class _EditEmployeeDialogState extends State<_EditEmployeeDialog> {
   }
 }
 
-// ── Error card ─────────────────────────────────────────────────────────────
+// -- Error card ---------------------------------------------------------------
 
 class _ErrorCard extends StatelessWidget {
   final String message;

@@ -23,7 +23,7 @@ class AttendanceScreen extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isNarrow = constraints.maxWidth < 800;
-        final contentPadding = isNarrow ? 16.0 : 24.0;
+        final contentPadding = isNarrow ? 16.0 : 28.0;
 
         return SingleChildScrollView(
           padding: EdgeInsets.all(contentPadding),
@@ -31,7 +31,7 @@ class AttendanceScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _AttendanceHeader(controller: controller, isNarrow: isNarrow),
-              SizedBox(height: isNarrow ? 12 : 16),
+              SizedBox(height: isNarrow ? 16 : 20),
 
               Obx(() => _SummaryChips(
                 total: controller.records.length,
@@ -40,7 +40,7 @@ class AttendanceScreen extends StatelessWidget {
                 absent: controller.absentCount,
                 isNarrow: isNarrow,
               )),
-              SizedBox(height: isNarrow ? 16 : 20),
+              SizedBox(height: isNarrow ? 20 : 24),
 
               Obx(() {
                 if (controller.isLoading.value) {
@@ -128,6 +128,23 @@ class _AttendanceHeaderState extends State<_AttendanceHeader> {
 
   @override
   Widget build(BuildContext context) {
+    final buttonStyle = ElevatedButton.styleFrom(
+      backgroundColor: AppTheme.primaryColor,
+      foregroundColor: Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 0,
+      textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+    );
+
+    final exportStyle = OutlinedButton.styleFrom(
+      foregroundColor: AppTheme.successColor,
+      side: BorderSide(color: AppTheme.successColor.withValues(alpha: 0.5)),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+    );
+
     if (widget.isNarrow) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,47 +152,37 @@ class _AttendanceHeaderState extends State<_AttendanceHeader> {
           Text(
             'Attendance Records',
             style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
+              fontSize: 24,
+              fontWeight: FontWeight.w800,
               color: AppTheme.textPrimaryOf(context),
+              letterSpacing: -0.3,
             ),
           ),
           const SizedBox(height: 4),
           Text(
-            'View and export attendance history',
-            style: TextStyle(fontSize: 13, color: AppTheme.textSecondaryOf(context)),
+            'Track, filter and export daily attendance history',
+            style: TextStyle(fontSize: 13, color: AppTheme.textSecondaryOf(context), height: 1.4),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 16),
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: 10,
+            runSpacing: 10,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               _DatePickerButton(label: 'From', value: _fmt(_from), onTap: _pickFrom),
-              Icon(Icons.arrow_forward, size: 14, color: AppTheme.textSecondaryOf(context)),
+              Icon(Icons.arrow_forward_rounded, size: 14, color: AppTheme.textSecondaryOf(context)),
               _DatePickerButton(label: 'To', value: _fmt(_to), onTap: _pickTo),
               ElevatedButton.icon(
                 onPressed: () => widget.controller.applyFilter(_from, _to),
                 icon: const Icon(Icons.filter_alt_outlined, size: 16),
                 label: const Text('Apply'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  elevation: 0,
-                ),
+                style: buttonStyle,
               ),
               OutlinedButton.icon(
                 onPressed: widget.controller.exportCsv,
-                icon: const Icon(Icons.download_outlined, size: 16),
+                icon: const Icon(Icons.download_rounded, size: 16),
                 label: const Text('Export CSV'),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppTheme.successColor,
-                  side: const BorderSide(color: AppTheme.successColor),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                ),
+                style: exportStyle,
               ),
             ],
           ),
@@ -191,55 +198,45 @@ class _AttendanceHeaderState extends State<_AttendanceHeader> {
             Text(
               'Attendance Records',
               style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
+                fontSize: 24,
+                fontWeight: FontWeight.w800,
                 color: AppTheme.textPrimaryOf(context),
+                letterSpacing: -0.3,
               ),
             ),
             const SizedBox(height: 4),
             Text(
-              'View and export attendance history',
-              style: TextStyle(fontSize: 14, color: AppTheme.textSecondaryOf(context)),
+              'Track, filter and export daily attendance history',
+              style: TextStyle(fontSize: 14, color: AppTheme.textSecondaryOf(context), height: 1.4),
             ),
           ],
         ),
         const Spacer(),
         _DatePickerButton(label: 'From', value: _fmt(_from), onTap: _pickFrom),
         const SizedBox(width: 8),
-        Icon(Icons.arrow_forward, size: 14, color: AppTheme.textSecondaryOf(context)),
+        Icon(Icons.arrow_forward_rounded, size: 14, color: AppTheme.textSecondaryOf(context)),
         const SizedBox(width: 8),
         _DatePickerButton(label: 'To', value: _fmt(_to), onTap: _pickTo),
-        const SizedBox(width: 12),
+        const SizedBox(width: 14),
         ElevatedButton.icon(
           onPressed: () => widget.controller.applyFilter(_from, _to),
           icon: const Icon(Icons.filter_alt_outlined, size: 16),
           label: const Text('Apply'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppTheme.primaryColor,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            elevation: 0,
-          ),
+          style: buttonStyle,
         ),
         const SizedBox(width: 10),
         OutlinedButton.icon(
           onPressed: widget.controller.exportCsv,
-          icon: const Icon(Icons.download_outlined, size: 16),
+          icon: const Icon(Icons.download_rounded, size: 16),
           label: const Text('Export CSV'),
-          style: OutlinedButton.styleFrom(
-            foregroundColor: AppTheme.successColor,
-            side: const BorderSide(color: AppTheme.successColor),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
+          style: exportStyle,
         ),
       ],
     );
   }
 }
 
-class _DatePickerButton extends StatelessWidget {
+class _DatePickerButton extends StatefulWidget {
   final String label;
   final String value;
   final VoidCallback onTap;
@@ -250,49 +247,84 @@ class _DatePickerButton extends StatelessWidget {
   });
 
   @override
+  State<_DatePickerButton> createState() => _DatePickerButtonState();
+}
+
+class _DatePickerButtonState extends State<_DatePickerButton> {
+  bool _hovered = false;
+
+  @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: BoxDecoration(
-          color: AppTheme.cardColorOf(context),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppTheme.borderColorOf(context)),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.calendar_today_outlined,
-              size: 14,
-              color: AppTheme.textSecondaryOf(context),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            color: _hovered
+                ? (isDark ? Colors.white.withValues(alpha: 0.06) : AppTheme.primaryColor.withValues(alpha: 0.04))
+                : AppTheme.cardColorOf(context),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: _hovered
+                  ? AppTheme.primaryColor.withValues(alpha: 0.4)
+                  : AppTheme.borderColorOf(context),
             ),
-            const SizedBox(width: 6),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: AppTheme.textSecondaryOf(context),
-                    fontWeight: FontWeight.w500,
-                  ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.03),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: AppTheme.textPrimaryOf(context),
-                    fontWeight: FontWeight.w600,
-                  ),
+                child: Icon(
+                  Icons.calendar_today_rounded,
+                  size: 14,
+                  color: AppTheme.primaryColor,
                 ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    widget.label.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: AppTheme.textSecondaryOf(context),
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 1),
+                  Text(
+                    widget.value,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: AppTheme.textPrimaryOf(context),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -318,21 +350,21 @@ class _SummaryChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final chips = [
-      _SummaryChip(label: 'Total Records', count: total, color: AppTheme.primaryColor, icon: Icons.list_alt),
-      _SummaryChip(label: 'Present', count: present, color: AppTheme.successColor, icon: Icons.check_circle_outline),
-      _SummaryChip(label: 'Late', count: lateCount, color: AppTheme.warningColor, icon: Icons.schedule),
+      _SummaryChip(label: 'Total Records', count: total, color: AppTheme.primaryColor, icon: Icons.list_alt_rounded),
+      _SummaryChip(label: 'Present', count: present, color: AppTheme.successColor, icon: Icons.check_circle_outline_rounded),
+      _SummaryChip(label: 'Late', count: lateCount, color: AppTheme.warningColor, icon: Icons.schedule_rounded),
       _SummaryChip(label: 'Absent', count: absent, color: AppTheme.errorColor, icon: Icons.cancel_outlined),
     ];
 
     return Wrap(
-      spacing: 10,
-      runSpacing: 8,
+      spacing: 12,
+      runSpacing: 10,
       children: chips,
     );
   }
 }
 
-class _SummaryChip extends StatelessWidget {
+class _SummaryChip extends StatefulWidget {
   final String label;
   final int count;
   final Color color;
@@ -345,28 +377,74 @@ class _SummaryChip extends StatelessWidget {
   });
 
   @override
+  State<_SummaryChip> createState() => _SummaryChipState();
+}
+
+class _SummaryChipState extends State<_SummaryChip> {
+  bool _hovered = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: color.withValues(alpha: 0.25)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 16, color: color),
-          const SizedBox(width: 8),
-          Text(
-            '$count $label',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: color,
-            ),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: AnimatedScale(
+        scale: _hovered ? 1.03 : 1.0,
+        duration: const Duration(milliseconds: 150),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: widget.color.withValues(alpha: _hovered ? 0.12 : 0.07),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: widget.color.withValues(alpha: 0.2)),
+            boxShadow: [
+              BoxShadow(
+                color: widget.color.withValues(alpha: _hovered ? 0.12 : 0.06),
+                blurRadius: _hovered ? 10 : 6,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-        ],
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: widget.color.withValues(alpha: 0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(widget.icon, size: 15, color: widget.color),
+              ),
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '${widget.count}',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      color: widget.color,
+                      height: 1.1,
+                    ),
+                  ),
+                  Text(
+                    widget.label,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                      color: widget.color.withValues(alpha: 0.8),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -447,13 +525,13 @@ class _TableHeader extends StatelessWidget {
         ? Colors.white.withValues(alpha: 0.04)
         : AppTheme.primaryColor.withValues(alpha: 0.03);
     final style = TextStyle(
-      fontSize: 11,
+      fontSize: 12,
       fontWeight: FontWeight.w700,
       color: AppTheme.textSecondaryOf(context),
       letterSpacing: 0.8,
     );
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
         color: headerBg,
         border: Border(
@@ -518,13 +596,41 @@ class _AttendanceRowState extends State<_AttendanceRow> {
     }
   }
 
+  Widget _timeCell(String value) {
+    if (value == '-') {
+      return Text(
+        value,
+        style: TextStyle(fontSize: 13, color: AppTheme.textSecondaryOf(context)),
+      );
+    }
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: isDark
+            ? Colors.white.withValues(alpha: 0.04)
+            : Colors.black.withValues(alpha: 0.03),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        value,
+        style: TextStyle(
+          fontSize: 13,
+          color: AppTheme.textPrimaryOf(context),
+          fontFamily: 'monospace',
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = _statusColor(record.status);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final stripeBg = widget.isEven
         ? Colors.transparent
-        : (isDark ? Colors.white.withValues(alpha: 0.02) : Colors.black.withValues(alpha: 0.015));
+        : (isDark ? Colors.white.withValues(alpha: 0.025) : Colors.black.withValues(alpha: 0.02));
     final hoverBg = isDark
         ? Colors.white.withValues(alpha: 0.05)
         : AppTheme.primaryColor.withValues(alpha: 0.04);
@@ -534,7 +640,8 @@ class _AttendanceRowState extends State<_AttendanceRow> {
       onExit: (_) => setState(() => _hovered = false),
       child: AnimatedContainer(
       duration: const Duration(milliseconds: 150),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      curve: Curves.easeOut,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
         color: _hovered ? hoverBg : stripeBg,
         border: Border(
@@ -585,25 +692,17 @@ class _AttendanceRowState extends State<_AttendanceRow> {
               ),
             ),
           ),
-          SizedBox(
-            width: 100,
-            child: Text(
-              _fmt(record.checkInTime),
-              style: TextStyle(fontSize: 13, color: AppTheme.textPrimaryOf(context)),
-            ),
-          ),
-          SizedBox(
-            width: 100,
-            child: Text(
-              _fmt(record.checkOutTime),
-              style: TextStyle(fontSize: 13, color: AppTheme.textPrimaryOf(context)),
-            ),
-          ),
+          SizedBox(width: 100, child: _timeCell(_fmt(record.checkInTime))),
+          SizedBox(width: 100, child: _timeCell(_fmt(record.checkOutTime))),
           SizedBox(
             width: 80,
             child: Text(
               _durationStr(record.breakDuration),
-              style: TextStyle(fontSize: 13, color: AppTheme.textSecondaryOf(context)),
+              style: TextStyle(
+                fontSize: 13,
+                color: AppTheme.textSecondaryOf(context),
+                fontFamily: 'monospace',
+              ),
             ),
           ),
           SizedBox(
@@ -612,25 +711,33 @@ class _AttendanceRowState extends State<_AttendanceRow> {
               _durationStr(record.workingDuration),
               style: TextStyle(
                 fontSize: 13,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
                 color: AppTheme.textPrimaryOf(context),
+                fontFamily: 'monospace',
               ),
             ),
           ),
           SizedBox(
             width: 80,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
                 color: color.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: color.withValues(alpha: 0.3)),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: color.withValues(alpha: 0.25)),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.withValues(alpha: 0.08),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
               ),
               child: Text(
                 record.statusLabel,
                 style: TextStyle(
                   fontSize: 11,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w700,
                   color: color,
                 ),
                 textAlign: TextAlign.center,
@@ -701,8 +808,6 @@ class _PaginationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final from = (currentPage * pageSize + 1).clamp(1, totalItems);
     final to = ((currentPage + 1) * pageSize).clamp(1, totalItems);
-    final isNarrow = MediaQuery.of(context).size.width < 600;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
       child: Wrap(
@@ -717,16 +822,25 @@ class _PaginationBar extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (!isNarrow) ...[
-                Text(
-                  'Page ${currentPage + 1} of $totalPages',
-                  style: TextStyle(fontSize: 13, color: AppTheme.textSecondaryOf(context)),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                const SizedBox(width: 12),
-              ],
-              _PageButton(icon: Icons.chevron_left, enabled: hasPrev, onTap: onPrev),
+                child: Text(
+                  'Page ${currentPage + 1} of $totalPages',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.primaryColor,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              _PageButton(icon: Icons.chevron_left_rounded, enabled: hasPrev, onTap: onPrev),
               const SizedBox(width: 6),
-              _PageButton(icon: Icons.chevron_right, enabled: hasNext, onTap: onNext),
+              _PageButton(icon: Icons.chevron_right_rounded, enabled: hasNext, onTap: onNext),
             ],
           ),
         ],
@@ -735,7 +849,7 @@ class _PaginationBar extends StatelessWidget {
   }
 }
 
-class _PageButton extends StatelessWidget {
+class _PageButton extends StatefulWidget {
   final IconData icon;
   final bool enabled;
   final VoidCallback onTap;
@@ -747,22 +861,39 @@ class _PageButton extends StatelessWidget {
   });
 
   @override
+  State<_PageButton> createState() => _PageButtonState();
+}
+
+class _PageButtonState extends State<_PageButton> {
+  bool _hovered = false;
+
+  @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: enabled ? onTap : null,
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        width: 34,
-        height: 34,
-        decoration: BoxDecoration(
-          border: Border.all(color: AppTheme.borderColorOf(context)),
-          borderRadius: BorderRadius.circular(8),
-          color: enabled ? AppTheme.cardColorOf(context) : AppTheme.surfaceColorOf(context),
-        ),
-        child: Icon(
-          icon,
-          size: 18,
-          color: enabled ? AppTheme.textPrimaryOf(context) : AppTheme.textSecondaryOf(context),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: widget.enabled ? widget.onTap : null,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: _hovered && widget.enabled
+                  ? AppTheme.primaryColor.withValues(alpha: 0.4)
+                  : AppTheme.borderColorOf(context),
+            ),
+            borderRadius: BorderRadius.circular(10),
+            color: _hovered && widget.enabled
+                ? AppTheme.primaryColor.withValues(alpha: 0.06)
+                : (widget.enabled ? AppTheme.cardColorOf(context) : AppTheme.surfaceColorOf(context)),
+          ),
+          child: Icon(
+            widget.icon,
+            size: 20,
+            color: widget.enabled ? AppTheme.textPrimaryOf(context) : AppTheme.textSecondaryOf(context),
+          ),
         ),
       ),
     );
@@ -774,31 +905,54 @@ class _PageButton extends StatelessWidget {
 class _EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 72, horizontal: 24),
       decoration: BoxDecoration(
         color: AppTheme.cardColorOf(context),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppTheme.borderColorOf(context)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Center(
         child: Column(
           children: [
-            Icon(Icons.event_busy, size: 56, color: AppTheme.borderColorOf(context)),
-            const SizedBox(height: 16),
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.05)
+                    : AppTheme.primaryColor.withValues(alpha: 0.06),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.event_busy_rounded,
+                size: 40,
+                color: AppTheme.textSecondaryOf(context).withValues(alpha: 0.5),
+              ),
+            ),
+            const SizedBox(height: 20),
             Text(
               'No attendance records found',
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: AppTheme.textSecondaryOf(context),
+                fontSize: 17,
+                fontWeight: FontWeight.w700,
+                color: AppTheme.textPrimaryOf(context),
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 8),
             Text(
-              'Try adjusting the date range filter',
-              style: TextStyle(fontSize: 13, color: AppTheme.textSecondaryOf(context)),
+              'Try selecting a different date range or broaden your filters to see results.',
+              style: TextStyle(fontSize: 13, color: AppTheme.textSecondaryOf(context), height: 1.5),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -817,28 +971,54 @@ class _ErrorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(40),
+      padding: const EdgeInsets.all(48),
       decoration: BoxDecoration(
         color: AppTheme.cardColorOf(context),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppTheme.borderColorOf(context)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Center(
         child: Column(
           children: [
-            Icon(Icons.error_outline,
-                size: 48, color: AppTheme.errorColor),
-            const SizedBox(height: 12),
-            Text(
-              message,
-              style: TextStyle(color: AppTheme.textSecondaryOf(context)),
-              textAlign: TextAlign.center,
+            Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                color: AppTheme.errorColor.withValues(alpha: 0.08),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.error_outline_rounded,
+                  size: 36, color: AppTheme.errorColor),
             ),
             const SizedBox(height: 16),
+            Text(
+              message,
+              style: TextStyle(
+                fontSize: 14,
+                color: AppTheme.textSecondaryOf(context),
+                height: 1.4,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: onRetry,
-              icon: const Icon(Icons.refresh),
+              icon: const Icon(Icons.refresh_rounded, size: 18),
               label: const Text('Retry'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                elevation: 0,
+              ),
             ),
           ],
         ),

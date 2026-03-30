@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:toastification/toastification.dart';
 
 import 'core/app_theme.dart';
 import 'core/routes.dart';
@@ -42,7 +43,8 @@ class AttendanceDashboardApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeController = Get.find<DashboardThemeController>();
 
-    return Obx(() => GetMaterialApp(
+    return ToastificationWrapper(
+      child: Obx(() => GetMaterialApp(
           title: 'Attendance Dashboard',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
@@ -56,7 +58,8 @@ class AttendanceDashboardApp extends StatelessWidget {
             name: '/404',
             page: () => const _NotFoundPage(),
           ),
-        ));
+        )),
+    );
   }
 }
 
