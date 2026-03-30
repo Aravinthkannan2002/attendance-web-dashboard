@@ -481,7 +481,7 @@ class _StatCardState extends State<_StatCard> {
             ? Matrix4.diagonal3Values(1.01, 1.01, 1.0)
             : Matrix4.identity(),
         transformAlignment: Alignment.center,
-        padding: const EdgeInsets.all(18),
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -492,12 +492,7 @@ class _StatCardState extends State<_StatCard> {
             ],
           ),
           borderRadius: BorderRadius.circular(16),
-          border: Border(
-            top: BorderSide(color: data.accentColor, width: 2),
-            left: BorderSide(color: AppTheme.borderColorOf(context)),
-            right: BorderSide(color: AppTheme.borderColorOf(context)),
-            bottom: BorderSide(color: AppTheme.borderColorOf(context)),
-          ),
+          border: Border.all(color: AppTheme.borderColorOf(context)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: _hovering ? 0.08 : 0.04),
@@ -509,58 +504,67 @@ class _StatCardState extends State<_StatCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: data.iconBg.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(12),
+            Container(height: 3, color: data.accentColor),
+            Padding(
+              padding: const EdgeInsets.all(18),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: data.iconBg.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(data.icon, color: data.iconBg, size: 22),
+                      ),
+                      const Spacer(),
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: data.accentColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ],
                   ),
-                  child: Icon(data.icon, color: data.iconBg, size: 22),
-                ),
-                const Spacer(),
-                Container(
-                  width: 6,
-                  height: 6,
-                  decoration: BoxDecoration(
-                    color: data.accentColor,
-                    shape: BoxShape.circle,
+                  const SizedBox(height: 14),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      data.value.toString(),
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w800,
+                        color: data.accentColor,
+                        height: 1,
+                      ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              alignment: Alignment.centerLeft,
-              child: Text(
-                data.value.toString(),
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w800,
-                  color: data.accentColor,
-                  height: 1,
-                ),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              data.label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: AppTheme.textPrimaryOf(context),
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 2),
-            Text(
-              data.subtitle,
-              style: TextStyle(
-                fontSize: 11,
-                color: AppTheme.textSecondaryOf(context),
+                  const SizedBox(height: 4),
+                  Text(
+                    data.label,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.textPrimaryOf(context),
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    data.subtitle,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: AppTheme.textSecondaryOf(context),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

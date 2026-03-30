@@ -454,8 +454,8 @@ class _NavItemState extends State<_NavItem>
         child: Material(
           color: isActive
               ? Colors.white.withValues(alpha: 0.15)
-              : Colors.white.withValues(
-                  alpha: 0.08 * _hoverAnimation.value),
+              : Colors.white.withValues(alpha: 
+                  0.08 * _hoverAnimation.value),
           borderRadius: BorderRadius.circular(10),
           child: InkWell(
             borderRadius: BorderRadius.circular(10),

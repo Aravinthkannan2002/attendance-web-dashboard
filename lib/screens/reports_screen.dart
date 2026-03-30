@@ -503,7 +503,7 @@ class _SummaryCardState extends State<_SummaryCard> {
         duration: const Duration(milliseconds: 180),
         transform: Matrix4.diagonal3Values(_hovered ? 1.02 : 1.0, _hovered ? 1.02 : 1.0, 1.0),
         transformAlignment: Alignment.center,
-        padding: const EdgeInsets.all(18),
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -519,12 +519,7 @@ class _SummaryCardState extends State<_SummaryCard> {
                   ],
           ),
           borderRadius: BorderRadius.circular(16),
-          border: Border(
-            top: BorderSide(color: widget.color, width: 2.5),
-            left: BorderSide(color: widget.border),
-            right: BorderSide(color: widget.border),
-            bottom: BorderSide(color: widget.border),
-          ),
+          border: Border.all(color: widget.border),
           boxShadow: [
             BoxShadow(
               color: _hovered
@@ -535,7 +530,13 @@ class _SummaryCardState extends State<_SummaryCard> {
             ),
           ],
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(height: 3, color: widget.color),
+            Padding(
+              padding: const EdgeInsets.all(18),
+              child: Row(
           children: [
             Container(
               width: 44,
@@ -577,6 +578,9 @@ class _SummaryCardState extends State<_SummaryCard> {
                   ),
                 ],
               ),
+            ),
+          ],
+        ),
             ),
           ],
         ),
