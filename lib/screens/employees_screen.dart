@@ -129,8 +129,8 @@ class _EmployeesHeader extends StatelessWidget {
                     Text(
                       'Employee Management',
                       style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w800,
                         color: AppTheme.textPrimaryOf(context),
                         letterSpacing: -0.3,
                       ),
@@ -357,14 +357,14 @@ class _TableHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          SizedBox(width: 40, child: Text('#', style: headerStyle)),
-          SizedBox(width: 180, child: Text('NAME', style: headerStyle)),
-          SizedBox(width: 120, child: Text('EMPLOYEE ID', style: headerStyle)),
-          SizedBox(width: 120, child: Text('DEPARTMENT', style: headerStyle)),
-          SizedBox(width: 120, child: Text('DESIGNATION', style: headerStyle)),
-          SizedBox(width: 120, child: Text('FACE REGISTERED', style: headerStyle)),
-          SizedBox(width: 80, child: Text('STATUS', style: headerStyle)),
-          SizedBox(width: 80, child: Text('ACTIONS', style: headerStyle)),
+          SizedBox(width: 50, child: Text('#', style: headerStyle)),
+          SizedBox(width: 220, child: Text('NAME', style: headerStyle)),
+          SizedBox(width: 130, child: Text('EMPLOYEE ID', style: headerStyle)),
+          SizedBox(width: 130, child: Text('DEPARTMENT', style: headerStyle)),
+          SizedBox(width: 130, child: Text('DESIGNATION', style: headerStyle)),
+          SizedBox(width: 140, child: Text('FACE REGISTERED', style: headerStyle)),
+          SizedBox(width: 100, child: Text('STATUS', style: headerStyle)),
+          SizedBox(width: 100, child: Text('ACTIONS', style: headerStyle)),
         ],
       ),
     );
@@ -427,53 +427,59 @@ class _EmployeeRowState extends State<_EmployeeRow> {
         child: Row(
           children: [
             SizedBox(
-              width: 40,
-              child: Text(
-                '${widget.index}',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  color: AppTheme.textSecondaryOf(context),
+              width: 50,
+              child: Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withValues(alpha: 0.06),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: Text(
+                    '${widget.index}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.textSecondaryOf(context),
+                    ),
+                  ),
                 ),
               ),
             ),
             SizedBox(
-              width: 180,
+              width: 220,
               child: Row(
                 children: [
                   Container(
-                    width: 40,
-                    height: 40,
+                    width: 42,
+                    height: 42,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppTheme.primaryColor.withValues(alpha: 0.20),
+                          AppTheme.primaryColor.withValues(alpha: 0.22),
                           AppTheme.primaryColor.withValues(alpha: 0.08),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppTheme.primaryColor.withValues(alpha: 0.12),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
+                      border: Border.all(
+                        color: AppTheme.primaryColor.withValues(alpha: 0.15),
+                      ),
                     ),
                     child: Center(
                       child: Text(
                         initials.toUpperCase(),
                         style: TextStyle(
-                          fontSize: 13,
+                          fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: AppTheme.primaryColor,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       employee.name,
@@ -489,63 +495,72 @@ class _EmployeeRowState extends State<_EmployeeRow> {
               ),
             ),
             SizedBox(
-              width: 120,
-              child: Text(
-                employee.employeeId.isNotEmpty ? employee.employeeId : '-',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AppTheme.textSecondaryOf(context).withValues(alpha: 0.8),
-                  fontFamily: 'monospace',
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.3,
+              width: 130,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withValues(alpha: 0.05),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  employee.employeeId.isNotEmpty ? employee.employeeId : '-',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppTheme.textSecondaryOf(context),
+                    fontFamily: 'monospace',
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.5,
+                  ),
                 ),
               ),
             ),
             SizedBox(
-              width: 120,
+              width: 130,
               child: Text(
                 employee.department?.isNotEmpty == true ? employee.department! : '-',
                 style: TextStyle(
                   fontSize: 13,
+                  fontWeight: FontWeight.w500,
                   color: AppTheme.textPrimaryOf(context),
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
             SizedBox(
-              width: 120,
+              width: 130,
               child: Text(
                 employee.designation?.isNotEmpty == true ? employee.designation! : '-',
                 style: TextStyle(
                   fontSize: 13,
+                  fontWeight: FontWeight.w500,
                   color: AppTheme.textPrimaryOf(context),
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
             SizedBox(
-              width: 120,
+              width: 140,
               child: _FaceRegisteredChip(registered: employee.isFaceRegistered),
             ),
             SizedBox(
-              width: 80,
+              width: 100,
               child: _StatusChip(isActive: employee.isActive),
             ),
             SizedBox(
-              width: 80,
+              width: 100,
               child: Row(
                 children: [
                   _ActionIcon(
-                    icon: Icons.edit_outlined,
+                    icon: Icons.edit_rounded,
                     color: AppTheme.primaryColor,
                     tooltip: 'Edit',
                     onPressed: () => _showEditDialog(context),
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 8),
                   _ActionIcon(
                     icon: employee.isActive
-                        ? Icons.person_off_outlined
-                        : Icons.person_add_outlined,
+                        ? Icons.person_off_rounded
+                        : Icons.person_add_rounded,
                     color: employee.isActive
                         ? AppTheme.errorColor
                         : AppTheme.successColor,
@@ -621,15 +636,23 @@ class _ActionIconState extends State<_ActionIcon> {
           child: Material(
             color: _hovered
                 ? widget.color.withValues(alpha: 0.15)
-                : widget.color.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(8),
+                : widget.color.withValues(alpha: 0.06),
+            borderRadius: BorderRadius.circular(10),
             child: InkWell(
               onTap: widget.onPressed,
-              borderRadius: BorderRadius.circular(8),
-              child: SizedBox(
-                width: 36,
-                height: 36,
-                child: Icon(widget.icon, size: 16, color: widget.color),
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: _hovered
+                        ? widget.color.withValues(alpha: 0.3)
+                        : widget.color.withValues(alpha: 0.12),
+                  ),
+                ),
+                child: Icon(widget.icon, size: 18, color: widget.color),
               ),
             ),
           ),
@@ -647,26 +670,26 @@ class _FaceRegisteredChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = registered ? AppTheme.successColor : AppTheme.errorColor;
     return Container(
-      constraints: const BoxConstraints(maxWidth: 110),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      constraints: const BoxConstraints(maxWidth: 120),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withValues(alpha: 0.18)),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            registered ? Icons.check_circle : Icons.cancel,
-            size: 13,
+            registered ? Icons.check_circle_rounded : Icons.cancel_rounded,
+            size: 14,
             color: color,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: 5),
           Text(
             registered ? 'Registered' : 'Not Set',
             style: TextStyle(
-              fontSize: 11,
+              fontSize: 11.5,
               fontWeight: FontWeight.w600,
               color: color,
             ),
@@ -685,21 +708,34 @@ class _StatusChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isActive ? AppTheme.successColor : AppTheme.textSecondary;
     return Container(
-      constraints: const BoxConstraints(maxWidth: 74),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      constraints: const BoxConstraints(maxWidth: 86),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withValues(alpha: 0.18)),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
-      child: Text(
-        isActive ? 'Active' : 'Inactive',
-        style: TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          color: color,
-        ),
-        textAlign: TextAlign.center,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 7,
+            height: 7,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 5),
+          Text(
+            isActive ? 'Active' : 'Inactive',
+            style: TextStyle(
+              fontSize: 11.5,
+              fontWeight: FontWeight.w600,
+              color: color,
+            ),
+          ),
+        ],
       ),
     );
   }
